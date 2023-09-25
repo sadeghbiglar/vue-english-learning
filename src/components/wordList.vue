@@ -1,10 +1,18 @@
 <template>
   <div class="container-fluid">
+    <h1>لیست کلمات</h1>
     <div class="row">
       <div v-for="(item, index) in words" :key="index" class="col-lg-4 col-md-6 col-xl-3">
-        <div class="word-box" @click="toggleMeaning(index)">
+        <div
+          class="word-box"
+          @click="toggleMeaning(index)"
+          :class="{ 'green-box': item.known, 'yellow-box': !item.known }"
+        >
           <div v-if="!item.showMeaning">{{ item.word }}</div>
-          <div class="meaning" v-if="item.showMeaning">{{ item.meaning }}</div>
+          <div class="meaning" v-if="item.showMeaning">
+            <strong>معنی:</strong>
+            {{ item.meaning }}
+          </div>
           <div class="button-container">
             <div class="button-wrapper">
               <button
@@ -81,6 +89,15 @@ export default {
   margin: 10px;
   cursor: pointer;
   text-align: center;
+  transition: background-color 0.3s; /* انتقال رنگ با انیمیشن */
+}
+
+.green-box {
+  background-color: green;
+}
+
+.yellow-box {
+  background-color: yellow;
 }
 
 .meaning {
