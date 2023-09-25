@@ -1,14 +1,17 @@
 <template>
-  <div>
-    <h1>لیست کلمات</h1>
-    <div v-for="(item, index) in words" :key="index" class="word-box">
-      <div>
-        <strong>کلمه:</strong>
-        {{ item.word }}
-      </div>
-      <div>
-        <strong>معنی:</strong>
-        {{ item.meaning }}
+  <div class="container-fluid">
+    <div class="row">
+      <div v-for="(item, index) in words" :key="index" class="col-lg-4 col-md-6 col-xl-3">
+        <div class="word-box">
+          <div>
+            <strong>کلمه:</strong>
+            {{ item.word }}
+          </div>
+          <div>
+            <strong>معنی:</strong>
+            {{ item.meaning }}
+          </div>
+        </div>
       </div>
     </div>
   </div>

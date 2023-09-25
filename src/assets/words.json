@@ -1,43 +1,49 @@
-[
-    {
-      "word": "apple",
-      "meaning": "سیب"
-    },
-    {
-      "word": "car",
-      "meaning": "ماشین"
-    },
-    {
-      "word": "dog",
-      "meaning": "سگ"
-    },
-    {
-      "word": "cat",
-      "meaning": "گربه"
-    },
-    {
-        "word": "apple",
-        "meaning": "سیب"
-      },
-      {
-        "word": "car",
-        "meaning": "ماشین"
-      },
-      {
-        "word": "dog",
-        "meaning": "سگ"
-      },
-      {
-        "word": "cat",
-        "meaning": "گربه"
-      },
-      {
-        "word": "apple",
-        "meaning": "سیب"
-      },
-      {
-        "word": "car",
-        "meaning": "ماشین"
-      }
-  ]
-  
+[{
+    "word": "apple",
+    "meaning": "سیب"
+  },
+  {
+    "word": "car",
+    "meaning": "ماشین"
+  },
+  {
+    "word": "dog",
+    "meaning": "سگ"
+  },
+  {
+    "word": "cat",
+    "meaning": "گربه"
+  },
+  {
+    "word": "data",
+    "meaning": "اطلاعات"
+  },
+  {
+    "word": "door",
+    "meaning": "درب"
+  },
+  {
+    "word": "foot",
+    "meaning": "پا"
+  },
+  {
+    "word": "test",
+    "meaning": "آزمایش"
+  },
+  {
+    "word": "table",
+    "meaning": "جدول"
+  },
+  {
+    "word": "fish",
+    "meaning": "ماهی"
+  },
+  {
+    "word": "girl",
+    "meaning": "دختر"
+  },
+  {
+    "word": "boy",
+    "meaning": "پسر"
+  }
+]
