@@ -5,8 +5,12 @@
         <div class="word-box" @click="toggleMeaning(index)">
           {{ item.word }}
           <div class="meaning" v-if="item.showMeaning">
-            <strong>معنی:</strong>
             {{ item.meaning }}
+            <div>
+              <button @click="markAsKnown(index)" class="btn btn-success">بلد بودم</button>
+
+              <button @click="markAsUnknown(index)" class="btn btn-danger">بلد نبودم</button>
+            </div>
           </div>
         </div>
       </div>
@@ -28,12 +32,12 @@ export default {
   methods: {
     async loadWords() {
       try {
-        const response = await fetch("/src/assets/words.json"); 
+        const response = await fetch("/src/assets/words.json");
         if (!response.ok) {
           throw new Error("Unable to fetch data");
         }
         this.words = await response.json();
-       
+
         this.words.forEach(word => (word.showMeaning = false));
       } catch (error) {
         console.error("Error loading words:", error);
@@ -41,6 +45,12 @@ export default {
     },
     toggleMeaning(index) {
       this.words[index].showMeaning = !this.words[index].showMeaning;
+    },
+    markAsKnown(index) {
+      this.words[index].known = true;
+    },
+    markAsUnknown(index) {
+      this.words[index].known = false;
     }
   }
 };
