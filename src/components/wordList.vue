@@ -33,10 +33,10 @@
       </div>
     </div>
 
-    <div v-if="stage === 'stage2' && !showSuccessMessage2">
+    <div v-if="stage === 'stage2' && showSuccessMessage2">
       <div v-if="allWordsKnown" class="alert alert-success">موفق شدید!</div>
     </div>
-    <div v-if="stage === 'stage3' && !showSuccessMessage3">
+    <div v-if="stage === 'stage3' && showSuccessMessage3">
       <div v-if="allWordsKnown" class="alert alert-success">عالی بود!</div>
     </div>
   </div>
@@ -92,11 +92,12 @@ export default {
       this.allWordsKnown = this.shuffledWords.every(word => word.known);
       if (this.allWordsKnown && this.stage == "stage1") {
         this.stage = "stage2";
-        this.showSuccessMessage1 = true;
+        this.showSuccessMessage2 = true;
         this.resetWordStatus();
+        console.log(this.shuffledWords);
       } else if (this.allWordsKnown && this.stage == "stage2") {
         this.stage = "stage3";
-        this.showSuccessMessage1 = true;
+        this.showSuccessMessage3 = true;
       }
     },
     markAsUnknown(index) {
