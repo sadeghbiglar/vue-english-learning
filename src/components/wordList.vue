@@ -4,7 +4,7 @@
     <div class="row">
       <div v-for="(item, index) in shuffledWords" :key="item.id" class="col-lg-4 col-md-6 col-xl-3">
         <div
-          v-if="item.known==false"
+          v-if="!item.known"
           class="word-box"
           @click="toggleMeaning(index)"
           :class="{ 'green-box': item.known, 'yellow-box': !item.known }"
@@ -43,94 +43,92 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      words: [], // آرایه‌ای برای نگهداری کلمات
-      shuffledWords: [], // کلمات به ترتیب تصادفی
-      allWordsKnown: false, // وضعیت بلد بودن همه کلمات
-      stage: "stage1", // مرحله فعلی (stage1 یا stage2 یا stage3)
-      showSuccessMessage1: false, // نمایش پیام موفقیت مرحله 1
-      showSuccessMessage2: false, // نمایش پیام موفقیت مرحله 2
-      showSuccessMessage3: false, // نمایش پیام موفقیت مرحله 3
-      correctWords: [], // آرایه‌ای برای ذخیره کلمات درست
-      wrongWords: [] // آرایه‌ای برای ذخیره کلمات غلط
-    };
-  },
-  mounted() {
-    // خواندن داده‌های JSON از فایل
-    this.loadWords();
-  },
-  methods: {
-    async loadWords() {
-      try {
-        const response = await fetch("/src/assets/words.json"); // مسیر فایل JSON را تعیین کنید
-        if (!response.ok) {
-          throw new Error("Unable to fetch data");
-        }
-        this.words = await response.json();
-        // اضافه کردن ویژگی‌های showMeaning و known به هر کلمه برای نمایش معنی و بلد بودن
-        this.words.forEach(word => {
-          word.showMeaning = false;
-          word.known = false;
-        });
-        // ترتیب تصادفی کلمات
-        this.shuffledWords = this.shuffleArray(this.words.slice());
-      } catch (error) {
-        console.error("Error loading words:", error);
-      }
-    },
-    toggleMeaning(index) {
-      // تغییر وضعیت نمایش معنی با کلیک روی باکس
-      this.shuffledWords[index].showMeaning = !this.shuffledWords[index]
-        .showMeaning;
-    },
-    markAsKnown(index) {
-      // علامت‌گذاری به عنوان "بلد بودم"
-      this.shuffledWords[index].known = true;
+<script setup>
+import { ref, onMounted } from "vue";
 
-      // حذف کلمه از آرایه shuffledWords
-      this.shuffledWords.splice(index, 1);
+const words = ref([]); // آرایه‌ای برای نگهداری کلمات
+const shuffledWords = ref([]); // کلمات به ترتیب تصادفی
+const allWordsKnown = ref(false); // وضعیت بلد بودن همه کلمات
+const stage = ref("stage1"); // مرحله فعلی (stage1 یا stage2 یا stage3)
+const showSuccessMessage1 = ref(false); // نمایش پیام موفقیت مرحله 1
+const showSuccessMessage2 = ref(false); // نمایش پیام موفقیت مرحله 2
+const showSuccessMessage3 = ref(false); // نمایش پیام موفقیت مرحله 3
+const correctWords = ref([]); // آرایه‌ای برای ذخیره کلمات درست
+const wrongWords = ref([]); // آرایه‌ای برای ذخیره کلمات غلط
 
-      // بررسی آیا همه کلمات بلد هستند
-      this.allWordsKnown = this.shuffledWords.length === 0;
-      if (this.allWordsKnown && this.stage == "stage1") {
-        this.stage = "stage2";
-        this.showSuccessMessage2 = true;
-        this.resetWordStatus();
-        console.log(this.shuffledWords);
-      } else if (this.allWordsKnown && this.stage == "stage2") {
-        this.stage = "stage3";
-        this.showSuccessMessage3 = true;
-      }
-    },
-    markAsUnknown(index) {
-      // علامت‌گذاری به عنوان "بلد نبودم"
-      this.shuffledWords[index].known = false;
-    },
-    shuffleArray(array) {
-      // تابعی برای تصادفی کردن یک آرایه
-      let shuffledArray = array.slice();
-      for (let i = shuffledArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledArray[i], shuffledArray[j]] = [
-          shuffledArray[j],
-          shuffledArray[i]
-        ];
-      }
-      return shuffledArray;
-    },
-    resetWordStatus() {
-      // بازنشانی وضعیت کلمات برای شروع مرحله جدید
-      this.words.forEach(word => {
-        word.showMeaning = false;
-        word.known = false;
-      });
-      this.shuffledWords = this.shuffleArray(this.words.slice());
+const loadWords = async () => {
+  try {
+    const response = await fetch("/src/assets/words.json"); // مسیر فایل JSON را تعیین کنید
+    if (!response.ok) {
+      throw new Error("Unable to fetch data");
     }
+    words.value = await response.json();
+    // اضافه کردن ویژگی‌های showMeaning و known به هر کلمه برای نمایش معنی و بلد بودن
+    words.value.forEach(word => {
+      word.showMeaning = false;
+      word.known = false;
+    });
+    // ترتیب تصادفی کلمات
+    shuffledWords.value = shuffleArray([...words.value]);
+  } catch (error) {
+    console.error("Error loading words:", error);
   }
 };
+
+const toggleMeaning = index => {
+  // تغییر وضعیت نمایش معنی با کلیک روی باکس
+  shuffledWords.value[index].showMeaning = !shuffledWords.value[index]
+    .showMeaning;
+};
+
+const markAsKnown = index => {
+  // علامت‌گذاری به عنوان "بلد بودم"
+  shuffledWords.value[index].known = true;
+
+  // حذف کلمه از آرایه shuffledWords
+  shuffledWords.value.splice(index, 1);
+
+  // بررسی آیا همه کلمات بلد هستند
+  allWordsKnown.value = shuffledWords.value.length === 0;
+  if (allWordsKnown.value && stage.value === "stage1") {
+    stage.value = "stage2";
+    showSuccessMessage2.value = true;
+    resetWordStatus();
+    console.log(shuffledWords.value);
+  } else if (allWordsKnown.value && stage.value === "stage2") {
+    stage.value = "stage3";
+    showSuccessMessage3.value = true;
+  }
+};
+
+const markAsUnknown = index => {
+  // علامت‌گذاری به عنوان "بلد نبودم"
+  shuffledWords.value[index].known = false;
+};
+
+const shuffleArray = array => {
+  // تابعی برای تصادفی کردن یک آرایه
+  let shuffledArray = [...array];
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};
+
+const resetWordStatus = () => {
+  // بازنشانی وضعیت کلمات برای شروع مرحله جدید
+  words.value.forEach(word => {
+    word.showMeaning = false;
+    word.known = false;
+  });
+  shuffledWords.value = shuffleArray([...words.value]);
+};
+
+onMounted(() => {
+  // خواندن داده‌های JSON از فایل
+  loadWords();
+});
 </script>
 
 <style>
