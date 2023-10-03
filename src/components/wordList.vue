@@ -4,6 +4,7 @@
     <div class="row">
       <div v-for="(item, index) in shuffledWords" :key="item.id" class="col-lg-4 col-md-6 col-xl-3">
         <div
+          v-if="item.known==false"
           class="word-box"
           @click="toggleMeaning(index)"
           :class="{ 'green-box': item.known, 'yellow-box': !item.known }"
@@ -88,8 +89,12 @@ export default {
     markAsKnown(index) {
       // علامت‌گذاری به عنوان "بلد بودم"
       this.shuffledWords[index].known = true;
+
+      // حذف کلمه از آرایه shuffledWords
+      this.shuffledWords.splice(index, 1);
+
       // بررسی آیا همه کلمات بلد هستند
-      this.allWordsKnown = this.shuffledWords.every(word => word.known);
+      this.allWordsKnown = this.shuffledWords.length === 0;
       if (this.allWordsKnown && this.stage == "stage1") {
         this.stage = "stage2";
         this.showSuccessMessage2 = true;
@@ -118,7 +123,7 @@ export default {
     },
     resetWordStatus() {
       // بازنشانی وضعیت کلمات برای شروع مرحله جدید
-      this.shuffledWords.forEach(word => {
+      this.words.forEach(word => {
         word.showMeaning = false;
         word.known = false;
       });
