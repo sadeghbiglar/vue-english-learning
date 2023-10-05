@@ -3,18 +3,22 @@
     <div class="row">
       <div v-for="(item, index) in shuffledWords" :key="item.id" class="col-lg-4 col-md-6 col-xl-3">
         <div v-if="!item.known" class="word-box">
-          <div v-if="!item.showMeaning">{{ item.word }}</div>
+          <div>
+            <div>{{ item.word }}</div>
+
+            <div class="button-container">
+              <div class="button-wrapper">
+                <button @click="markAsKnown(index)" class="btn btn-success">بلد بودم</button>
+              </div>
+              <div class="button-wrapper">
+                <button @click="markAsUnknown(index)" class="btn btn-danger">بلد نبودم</button>
+              </div>
+            </div>
+          </div>
+
           <div>
             <button @click="toggleMeaning(index)" class="btn btn-success">نمایش معنی</button>
             <div v-if="item.showMeaning">{{ item.meaning }}</div>
-          </div>
-          <div class="button-container">
-            <div class="button-wrapper">
-              <button @click="markAsKnown(index)" class="btn btn-success">بلد بودم</button>
-            </div>
-            <div class="button-wrapper">
-              <button @click="markAsUnknown(index)" class="btn btn-danger">بلد نبودم</button>
-            </div>
           </div>
         </div>
       </div>
