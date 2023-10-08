@@ -1,5 +1,12 @@
 <template>
   <div class="container-fluid">
+    <div>
+      <div class="progress-container">
+        <div class="progress-bar" :style="{ width: `${stage1Progress}%` }"></div>
+        <div class="progress-bar" :style="{ width: `${stage2Progress}%` }"></div>
+        <div class="progress-bar" :style="{ width: `${stage3Progress}%` }"></div>
+      </div>
+    </div>
     <div class="row">
       <div v-for="(item, index) in shuffledWords" :key="item.id" class="col-lg-4 col-md-6 col-xl-3">
         <div v-if="!item.known" class="word-box">
@@ -46,6 +53,12 @@ const showSuccessMessage3 = ref(false); // نمایش پیام موفقیت مر
 const correctWords = ref([]); // آرایه‌ای برای ذخیره کلمات درست
 const wrongWords = ref([]); // آرایه‌ای برای ذخیره کلمات غلط
 const show_meaning_click = ref(false);
+const currentProgress = ref(0);
+const maxProgress = ref(100);
+const stage1Progress = ref(0);
+const stage2Progress = ref(0);
+const stage3Progress = ref(0);
+const totalProgress = 100;
 const loadWords = async () => {
   try {
     const response = await fetch("/src/assets/words.json"); // مسیر فایل JSON را تعیین کنید
@@ -83,11 +96,13 @@ const markAsKnown = index => {
   if (allWordsKnown.value && stage.value === "stage1") {
     stage.value = "stage2";
     showSuccessMessage2.value = true;
+    stage1Progress.value = 30; // مرحله 1
     resetWordStatus();
     console.log(shuffledWords.value);
   } else if (allWordsKnown.value && stage.value === "stage2") {
     stage.value = "stage3";
     showSuccessMessage3.value = true;
+    stage2Progress.value = 60; // مرحله 2
   }
 };
 
@@ -121,7 +136,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .word-box {
   border: 1px solid #ccc;
   padding: 10px;
@@ -159,5 +174,20 @@ onMounted(() => {
 
 .alert-success {
   margin-top: 20px; /* تعیین فاصله بین پیام هشدار و کلمات */
+}
+.progress-container {
+  width: 100%;
+  height: 20px;
+  background-color: #eee;
+  margin-top: 10px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #e228e2;
+  position: absolute;
+  border-radius: 10px;
 }
 </style>
