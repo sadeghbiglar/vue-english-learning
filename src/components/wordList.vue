@@ -11,6 +11,9 @@
       <div v-for="(item, index) in shuffledWords" :key="item.id" class="col-lg-4 col-md-6 col-xl-3">
         <div v-if="!item.known" class="word-box">
           <div>
+            <img :src="`src/assets/images/${item.word}.jpg`" class="image-container">
+          </div>
+          <div>
             <div style="font-size:40px ">{{ item.word }}</div>
 
             <div class="button-container">
@@ -189,5 +192,9 @@ onMounted(() => {
   background-color: #e228e2;
   position: absolute;
   border-radius: 10px;
+}
+.image-container {
+  width: 200px;
+  height: 150px;
 }
 </style>
