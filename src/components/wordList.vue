@@ -4,7 +4,7 @@
       <div v-for="(item, index) in shuffledWords" :key="item.id" class="col-lg-4 col-md-6 col-xl-3">
         <div v-if="!item.known" class="word-box">
           <div>
-            <div>{{ item.word }}</div>
+            <div style="font-size:40px ">{{ item.word }}</div>
 
             <div class="button-container">
               <div class="button-wrapper">
@@ -17,7 +17,7 @@
           </div>
 
           <div>
-            <button @click="toggleMeaning(index)" class="btn btn-success">نمایش معنی</button>
+            <button @click="toggleMeaning(index)" class="btn btn-primary">نمایش معنی</button>
             <div v-if="item.showMeaning">{{ item.meaning }}</div>
           </div>
         </div>
