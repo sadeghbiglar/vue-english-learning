@@ -114,6 +114,14 @@ const markAsUnknown = index => {
     shuffledWords.value[index].known = false;
     const removedValue = shuffledWords.value.splice(index, 1)[0];
     wrongWords.value.push(removedValue);
+    if(shuffledWords.value.length===0){
+       stage.value = "stage_end";
+    stage3Progress.value = 100; // مرحله 3
+    //resetWordStatus();
+    // console.log(shuffledWords.value);
+    console.log(correctWords.value);
+    console.log(wrongWords.value);
+    }
   } else {
     shuffledWords.value = shuffleArray([...shuffledWords.value]);
   }
